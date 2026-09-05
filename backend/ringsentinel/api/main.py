@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 from typing import Any
@@ -11,7 +12,10 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
 from ..agent.actions import ACTION_SPEC, PROHIBITED_AUTOMATIC_ACTIONS
+from ..config import ARTIFACTS_DIR
 from .engine import Engine
+
+STUDIES_PATH = ARTIFACTS_DIR / "evaluation" / "studies.json"
 
 _engine: Engine | None = None
 
@@ -138,6 +142,23 @@ def ledger(limit: int = Query(200, ge=1, le=2000)) -> dict[str, Any]:
             for e in entries
         ],
     }
+
+
+@app.get("/api/studies")
+def studies() -> dict[str, Any]:
+    """Seed variance, feature ablation, prevalence sensitivity and fairness.
+
+    Read from `artifacts/evaluation/studies.json`, produced by
+    `ringsentinel study`. Returns `available: false` rather than erroring when
+    the studies have not been run, so the dashboard degrades to hiding the
+    section instead of failing to load.
+    """
+    if not STUDIES_PATH.exists():
+        return {
+            "available": False,
+            "hint": "run `ringsentinel study` to generate artifacts/evaluation/studies.json",
+        }
+    return {"available": True, **json.loads(STUDIES_PATH.read_text())}
 
 
 @app.get("/api/policy")
