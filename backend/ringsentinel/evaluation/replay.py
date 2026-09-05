@@ -54,6 +54,8 @@ def run_replay(
     train_cutoff_day: int = 70,
     score_day: int = 120,
     verbose: bool = True,
+    skip_importance: bool = False,
+    columns: list[str] | None = None,
 ) -> ReplayResult:
     accounts, orders, claims = dataset.accounts, dataset.orders, dataset.claims
     t0 = dataset.meta["t0"]
@@ -66,7 +68,9 @@ def run_replay(
 
     # ---- training fold: everything known at the cutoff ----
     train_feats, _, _ = build_features(accounts, orders, claims, as_of=t_train)
-    cols = feature_columns(train_feats)
+    # `columns` restricts the model to a subset of features (used by the
+    # ablation study). Default is every non-label column.
+    cols = list(columns) if columns else feature_columns(train_feats)
     y_train = train_feats["account_id"].map(label_map).astype(int)
     if verbose:
         print(f"  train: {len(train_feats):,} accounts as of day {train_cutoff_day} "
@@ -133,11 +137,12 @@ def run_replay(
         "pr_curve": met.pr_curve(y_test, model_p).to_dict("records"),
     }
 
-    try:
-        imp = feature_importance(model, test_feats, pd.Series(y_test), n_repeats=4)
-        report["feature_importance"] = imp.head(20).to_dict("records")
-    except Exception as exc:  # pragma: no cover - diagnostics only
-        report["feature_importance_error"] = str(exc)
+    if not skip_importance:
+        try:
+            imp = feature_importance(model, test_feats, pd.Series(y_test), n_repeats=4)
+            report["feature_importance"] = imp.head(20).to_dict("records")
+        except Exception as exc:  # pragma: no cover - diagnostics only
+            report["feature_importance_error"] = str(exc)
 
     return ReplayResult(
         train_cutoff_day=train_cutoff_day,

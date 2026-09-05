@@ -30,9 +30,13 @@ Time-ordered held-out fold, 6,945 accounts, 5.28% prevalence:
 
 | Metric | Model | Rules |
 |---|---|---|
-| Average precision | 0.978 | 0.890 |
+| Average precision (7 seeds) | **0.968 ± 0.016** | 0.855 ± 0.029 |
+| Average precision (committed seed) | 0.978 | 0.890 |
 | Precision / recall @ 0.696 | 0.915 / 0.973 | 0.937 / 0.845 |
 | Net benefit | ₹20.34 L | ₹17.85 L |
+
+Precision is quoted at 5.3% prevalence. At 1% it falls to **0.660**; see
+[`STUDIES.md`](STUDIES.md).
 
 Recall degrades with adversary sophistication: **1.00 at L0–L6, 0.94 at L7,
 0.89 at L8, 0.84 at L9.** Report the breakdown, never the headline alone.
@@ -86,21 +90,41 @@ until it transacts.
 Without merchant checkout telemetry the graph is materially weaker, and worst
 on the high-evasion rings. See `ARCHITECTURE.md`.
 
-**Prevalence shift.** Evaluated at 5.3%. Precision at a fixed threshold falls if
-true prevalence is 1%.
+**Prevalence shift.** Evaluated at 5.3%. Measured: precision falls to 0.660 at
+1% prevalence with recall unchanged — roughly one flag in three would be wrong.
 
 ## Fairness
 
-**Not measured, and this is a real gap.** The known failure mode has a
-disparate-impact shape: the model's errors concentrate on multi-account
-households and shared-address residents — hostels, PG accommodation, joint
-families — which correlate with younger, lower-income and migrant customers in
-India. A system that adds friction to exactly those customers is a fairness
-problem, not only an accuracy one.
+**Measured.** Among legitimate accounts only, on the held-out fold:
 
-Before any real deployment: measure action rates by address type, household
-size, city tier and account age, and set a ceiling on customer-visible actions
-against shared-address cohorts.
+| Cohort | Legitimate accounts | Restricted | Rate | Queued for review |
+|---|---|---|---|---|
+| solo | 4,406 | 0 | 0.000% | 0 (0.00%) |
+| household | 1,444 | 4 | 0.277% | 88 (6.09%) |
+| hub (hostel/PG/office) | 728 | 0 | 0.000% | 8 (1.10%) |
+
+**No solo shopper is ever restricted or queued.** The disparate-impact ratio
+against that reference group is therefore *undefined*, not merely large — a
+stronger result than any finite ratio. Every wrongly restricted customer lives
+in a multi-account household; households are 22% of the legitimate population
+and absorb **100% of restrictions and 92% of all flags**.
+
+This has a real-world shape: multi-account households and shared addresses in
+India correlate with joint families, migrant workers, students in PG
+accommodation and lower-income shared housing. A system that spends its entire
+error budget on those customers is a fairness problem, not only an accuracy one,
+and it is invisible to anyone reporting only precision and recall.
+
+The absolute harm is small (four customers, 0.277%) because the no-claims rule
+and evidence gating divert most household flags into the invisible review queue.
+The 6.09% household review rate is the true cost, and analysts bear it rather
+than customers.
+
+**Before deployment:** cap customer-visible actions against shared-address
+cohorts; require a second reviewer for any restriction on a household account;
+and monitor this table continuously, since it drifts as the ring population
+changes. Also measure by city tier and account age, which this study does not
+cover. See [`STUDIES.md`](STUDIES.md).
 
 ## Ethical considerations
 

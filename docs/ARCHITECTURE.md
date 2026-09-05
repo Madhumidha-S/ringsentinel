@@ -81,10 +81,14 @@ and 313 pure-legitimate with zero mixed.
 temporal. Two design points matter.
 
 **Guilt by association uses behaviour, never labels.** We aggregate what an
-account's graph neighbours *do* — their claim rates, their claim volume. An
-account with a spotless record whose four linked peers all file
-item-not-received claims is suspicious, and this is how a ring's freshest
-account is caught before it has done anything itself.
+account's graph neighbours *do* — their claim rates, their claim volume — never
+their labels.
+
+Ablation shows these three features contribute **nothing measurable** to
+accuracy: removing them changes AP from 0.978 to 0.981, inside the ±0.016 seed
+noise. The information is already carried by the graph and community features.
+They are kept because they make the evidence packet legible to a human reviewer,
+not because they are load-bearing. See `STUDIES.md`.
 
 **Everything is computed as of a timestamp.** Accounts created after the cutoff
 are excluded; later orders and claims are invisible; the graph is rebuilt from

@@ -32,6 +32,47 @@ SECONDS_PER_DAY = 86_400
 # Columns that must never reach the model.
 LABEL_COLUMNS = ("label_is_ring", "label_ring_id", "label_evasion_level", "cohort")
 
+#: Feature families, used by the ablation study to answer the question a
+#: reviewer will always ask: is the graph earning its keep, or would ordinary
+#: per-account behavioural features get you the same result?
+FEATURE_FAMILIES: dict[str, tuple[str, ...]] = {
+    "behavioural": (
+        "n_orders", "total_amount", "mean_amount", "max_amount", "std_amount",
+        "n_promos", "n_claims", "claimed_amount", "granted_amount", "n_inr_claims",
+        "account_age_days", "claim_rate", "inr_claim_share", "claimed_value_share",
+        "promo_rate",
+    ),
+    "identity_churn": (
+        "n_devices", "n_cards", "n_addresses", "n_ips",
+        "devices_per_order", "cards_per_order", "addresses_per_order",
+    ),
+    "temporal": (
+        "days_to_first_order", "days_to_first_claim", "order_span_days",
+        "signup_burst_24h",
+    ),
+    "graph": (
+        "graph_degree", "graph_weighted_degree", "component_size", "max_edge_weight",
+        "community_size", "two_hop_size", "strongest_link", "n_strong_links",
+    ),
+    "neighbour": (
+        "neighbour_claim_rate", "neighbour_total_claims", "neighbour_max_claim_rate",
+    ),
+    "community": (
+        "community_claim_rate", "community_signup_span_days", "community_total_value",
+        "community_cohesion",
+    ),
+}
+
+
+def family_columns(families: list[str] | tuple[str, ...]) -> list[str]:
+    """Flatten a set of family names into their feature columns."""
+    out: list[str] = []
+    for name in families:
+        if name not in FEATURE_FAMILIES:
+            raise KeyError(f"unknown feature family {name!r}")
+        out.extend(FEATURE_FAMILIES[name])
+    return out
+
 
 def _safe_div(a: float, b: float) -> float:
     return float(a / b) if b else 0.0

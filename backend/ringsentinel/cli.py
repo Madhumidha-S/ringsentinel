@@ -10,6 +10,7 @@ Every reported number in this repository is reproducible with:
 from __future__ import annotations
 
 import argparse
+import contextlib
 import json
 import sys
 from pathlib import Path
@@ -18,6 +19,12 @@ import pandas as pd
 
 from .config import ARTIFACTS_DIR, COSTS, SimulationConfig
 from .evaluation.replay import run_replay
+from .evaluation.studies import (
+    ablation,
+    fairness_by_cohort,
+    prevalence_sensitivity,
+    seed_variance,
+)
 from .simulator.generate import generate
 
 DATASET_DIR = ARTIFACTS_DIR / "dataset"
@@ -131,6 +138,53 @@ def cmd_evaluate(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_study(args: argparse.Namespace) -> int:
+    """Robustness studies: seed variance, ablation, prevalence, fairness."""
+    out: dict = {}
+    seeds = [SimulationConfig.seed + i for i in range(args.n_seeds)]
+
+    print("=" * 78)
+    print("STUDY 1/4  seed variance")
+    print("-" * 78)
+    out["seed_variance"] = seed_variance(seeds, args.train_cutoff_day, args.score_day)
+
+    print("\n" + "=" * 78)
+    print("STUDY 2/4  feature-family ablation")
+    print("-" * 78)
+    out["ablation"] = ablation(SimulationConfig.seed, args.train_cutoff_day, args.score_day)
+
+    print("\n" + "=" * 78)
+    print("STUDY 3/4  prevalence sensitivity   4/4  fairness by cohort")
+    print("-" * 78)
+    dataset = generate(SimulationConfig(seed=SimulationConfig.seed))
+    result = run_replay(
+        dataset, args.train_cutoff_day, args.score_day, verbose=False, skip_importance=True
+    )
+    out["prevalence_sensitivity"] = prevalence_sensitivity(result)
+    out["fairness"] = fairness_by_cohort(result, dataset)
+
+    for row in out["prevalence_sensitivity"]["results"]:
+        print(
+            f"  prevalence {row['achieved_prevalence']:.4f}: "
+            f"precision {row['precision_mean']:.3f} "
+            f"[{row['precision_p2_5']:.3f}, {row['precision_p97_5']:.3f}]  "
+            f"recall {row['recall_mean']:.3f}"
+        )
+    print()
+    for row in out["fairness"]["by_cohort"]:
+        print(
+            f"  {row['cohort']:10} n={row['legitimate_accounts']:5d}  "
+            f"restricted={row['restricted']:3d} ({row['restriction_rate']:.4%})  "
+            f"disparate impact vs solo = {row['disparate_impact_vs_solo']}"
+        )
+
+    EVAL_DIR.mkdir(parents=True, exist_ok=True)
+    path = EVAL_DIR / "studies.json"
+    path.write_text(json.dumps(out, indent=2, default=str))
+    print(f"\nwritten -> {path}")
+    return 0
+
+
 def cmd_serve(args: argparse.Namespace) -> int:
     import uvicorn
 
@@ -139,6 +193,11 @@ def cmd_serve(args: argparse.Namespace) -> int:
 
 
 def main(argv: list[str] | None = None) -> int:
+    # Studies take minutes; block-buffered stdout hides all progress when the
+    # output is piped to a file or a log.
+    with contextlib.suppress(AttributeError, ValueError):
+        sys.stdout.reconfigure(line_buffering=True)
+
     parser = argparse.ArgumentParser(prog="ringsentinel", description=__doc__)
     sub = parser.add_subparsers(dest="command", required=True)
 
@@ -152,6 +211,14 @@ def main(argv: list[str] | None = None) -> int:
     e.add_argument("--seed", type=int, default=SimulationConfig.seed)
     e.add_argument("--from-disk", action="store_true", help="reuse artifacts/dataset")
     e.set_defaults(func=cmd_evaluate)
+
+    st = sub.add_parser(
+        "study", help="robustness studies (variance, ablation, prevalence, fairness)"
+    )
+    st.add_argument("--n-seeds", type=int, default=7)
+    st.add_argument("--train-cutoff-day", type=int, default=55)
+    st.add_argument("--score-day", type=int, default=120)
+    st.set_defaults(func=cmd_study)
 
     s = sub.add_parser("serve", help="run the API")
     s.add_argument("--host", default="127.0.0.1")

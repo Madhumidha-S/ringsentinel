@@ -18,18 +18,25 @@ Measured on a **time-ordered held-out fold**: trained on accounts known at day
 
 | | Model | Rules baseline |
 |---|---|---|
-| Average precision | **0.978** | 0.890 |
-| Precision @ cost-optimal | **0.915** | 0.937 |
-| Recall @ cost-optimal | **0.973** | 0.845 |
-| False positives | 33 | 21 |
-| Net benefit | **₹20.3 L** | ₹17.8 L |
+| Average precision | **0.968 ± 0.016** | 0.855 ± 0.029 |
+| Precision @ cost-optimal | 0.940 ± 0.029 | — |
+| Recall @ cost-optimal | 0.945 ± 0.023 | — |
+| False positives | 21 ± 11 | — |
+
+Mean ± SD across **seven independently generated populations**. The single seed
+committed in `artifacts/` scores 0.978 — near the top of the range, and its 33
+false positives are the worst of the seven. Both are reported so neither
+flatters the result. Full spread in [`docs/STUDIES.md`](docs/STUDIES.md).
 
 The overall numbers are the least interesting part. This is the result that matters:
 
-| Adversary | L0–L6 (naive → evasive) | L7 | L8 | L9 (adaptive) |
-|---|---|---|---|---|
-| Rules baseline recall | 1.00 – 0.90 | 0.47 | 0.59 | **0.25** |
-| Model recall | 1.00 | 0.94 | 0.89 | **0.84** |
+| Adversary | L0–L6 (naive → evasive) | L7–L9 (evasive → adaptive) |
+|---|---|---|
+| Rules baseline recall | 0.992 ± 0.010 | **0.358 ± 0.099** |
+| Model recall | 0.992 ± 0.010 | **0.832 ± 0.059** |
+
+The distributions do not overlap: the model's *worst* seed on hard rings (0.720)
+beats the rules baseline's *best* (0.465).
 
 A hand-written rule set is *indistinguishable from the model* against careless
 rings, and collapses to 25% against a disciplined operator. Every rupee of the
@@ -39,6 +46,16 @@ completely.
 
 **After the action policy**, of 245 customer-visible actions, **4 land on
 legitimate customers** (98.4% precision on anything a customer actually feels).
+
+And four robustness studies, because the headline alone proves very little:
+
+- **Ablation.** Behavioural features alone reach AP 0.487 and catch **5.5%** of
+  sophisticated rings. The graph layer is not decoration.
+- **Prevalence.** At 1% prevalence instead of 5.3%, precision falls from 0.915 to
+  **0.660**. Measured, not hand-waved.
+- **Fairness.** **100% of wrongly restricted customers live in multi-account
+  households.** No solo shopper is ever restricted, so the disparate-impact ratio
+  is undefined rather than merely large.
 
 ---
 
@@ -120,6 +137,12 @@ Tests:
 cd backend && .venv/bin/pytest tests/ -q && .venv/bin/ruff check .
 ```
 
+Robustness studies (~4 min):
+
+```bash
+cd backend && .venv/bin/ringsentinel study
+```
+
 ---
 
 ## Documentation
@@ -128,6 +151,7 @@ cd backend && .venv/bin/pytest tests/ -q && .venv/bin/ruff check .
 |---|---|
 | [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) | System design, graph weighting, data flow, live-data degradation |
 | [`docs/EVALUATION.md`](docs/EVALUATION.md) | Full results, the artefact hunt, what the numbers do not show |
+| [`docs/STUDIES.md`](docs/STUDIES.md) | Seed variance, feature ablation, prevalence sensitivity, fairness |
 | [`docs/MODEL_CARD.md`](docs/MODEL_CARD.md) | Intended use, failure modes, cost assumptions, fairness |
 | [`docs/DATA_CARD.md`](docs/DATA_CARD.md) | Generator design, evasion profiles, known unrealism |
 | [`docs/THREAT_MODEL.md`](docs/THREAT_MODEL.md) | Defence-only posture, abuse surface, what is out of scope |

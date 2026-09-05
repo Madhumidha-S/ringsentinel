@@ -185,11 +185,32 @@ After the fixes, permutation importance is led by genuine graph structure
 `tests/test_no_leakage.py::test_no_feature_is_a_perfect_label_proxy` now asserts
 no single feature exceeds F1 0.98 alone, so this class of bug fails the build.
 
+## Robustness studies
+
+Four studies address what a single backtest cannot — seed variance, feature
+ablation, prevalence sensitivity and fairness. Full results in
+[`STUDIES.md`](STUDIES.md). The three that change how the headline should be
+read:
+
+- **The committed seed is a good one.** Across seven populations, AP is
+  0.968 ± 0.016 against this seed's 0.978. Its 33 false positives are the worst
+  of the seven (mean 21).
+- **Behavioural features alone reach AP 0.487** and catch 5.5% of L7–L9 rings.
+  Graph features alone catch every naive ring but only 58% of sophisticated
+  ones. The two halves solve different problems.
+- **The neighbour features contribute nothing measurable.** Dropping all three
+  gives AP 0.981 versus 0.978 with them — within seed noise. They are retained
+  for explanatory value in the evidence packet, but the claim that guilt-by-
+  association is a load-bearing signal was wrong: that information is already
+  carried by the graph and community features.
+
 ## What is not evaluated
 
 - **Real data.** Every number is synthetic. The generator encodes my model of
   how rings behave; a real operator will differ.
 - **Concept drift.** One 120-day window, no retraining schedule.
+- **Cost-assumption sensitivity.** The 2.5:1 recovery-to-false-positive ratio is
+  held fixed everywhere.
 - **Adaptive adversaries.** Evasion levels are static. A real operator observes
   which accounts get caught and adapts. Nothing here measures that loop.
 - **Fairness across customer segments.** Not measured; see `MODEL_CARD.md`.

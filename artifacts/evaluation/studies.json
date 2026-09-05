@@ -1,0 +1,383 @@
+{
+  "seed_variance": {
+    "seeds": [
+      20260904,
+      20260905,
+      20260906,
+      20260907,
+      20260908,
+      20260909,
+      20260910
+    ],
+    "per_seed": [
+      {
+        "seed": 20260904,
+        "n_test": 6945,
+        "prevalence": 0.0528,
+        "model_ap": 0.9783,
+        "rules_ap": 0.8904,
+        "precision": 0.9154,
+        "recall": 0.9728,
+        "f1": 0.9432,
+        "false_positives": 33,
+        "net_benefit_inr": 2034240.0,
+        "recall_L0_L6": 1.0,
+        "recall_L7_L9": 0.8913000000000001,
+        "rules_recall_L7_L9": 0.43773333333333336
+      },
+      {
+        "seed": 20260905,
+        "n_test": 7013,
+        "prevalence": 0.0559,
+        "model_ap": 0.9819,
+        "rules_ap": 0.8898,
+        "precision": 0.927,
+        "recall": 0.9719,
+        "f1": 0.9489,
+        "false_positives": 30,
+        "net_benefit_inr": 2183520.0,
+        "recall_L0_L6": 0.9966,
+        "recall_L7_L9": 0.876,
+        "rules_recall_L7_L9": 0.23616666666666666
+      },
+      {
+        "seed": 20260906,
+        "n_test": 6796,
+        "prevalence": 0.0468,
+        "model_ap": 0.976,
+        "rules_ap": 0.8667,
+        "precision": 0.935,
+        "recall": 0.9497,
+        "f1": 0.9423,
+        "false_positives": 21,
+        "net_benefit_inr": 1737440.0,
+        "recall_L0_L6": 1.0,
+        "recall_L7_L9": 0.7948333333333334,
+        "rules_recall_L7_L9": 0.35336666666666666
+      },
+      {
+        "seed": 20260907,
+        "n_test": 7030,
+        "prevalence": 0.0448,
+        "model_ap": 0.9695,
+        "rules_ap": 0.8567,
+        "precision": 0.9728,
+        "recall": 0.9079,
+        "f1": 0.9392,
+        "false_positives": 8,
+        "net_benefit_inr": 1673920.0,
+        "recall_L0_L6": 0.9731285714285713,
+        "recall_L7_L9": 0.7202999999999999,
+        "rules_recall_L7_L9": 0.2114
+      },
+      {
+        "seed": 20260908,
+        "n_test": 6907,
+        "prevalence": 0.0433,
+        "model_ap": 0.9353,
+        "rules_ap": 0.814,
+        "precision": 0.9003,
+        "recall": 0.9365,
+        "f1": 0.918,
+        "false_positives": 31,
+        "net_benefit_inr": 1583200.0,
+        "recall_L0_L6": 0.9974999999999999,
+        "recall_L7_L9": 0.8551666666666667,
+        "rules_recall_L7_L9": 0.37820000000000004
+      },
+      {
+        "seed": 20260909,
+        "n_test": 7077,
+        "prevalence": 0.0483,
+        "model_ap": 0.963,
+        "rules_ap": 0.8341,
+        "precision": 0.9755,
+        "recall": 0.9298,
+        "f1": 0.9521,
+        "false_positives": 8,
+        "net_benefit_inr": 1863360.0,
+        "recall_L0_L6": 0.9848857142857143,
+        "recall_L7_L9": 0.8258000000000001,
+        "rules_recall_L7_L9": 0.42573333333333335
+      },
+      {
+        "seed": 20260910,
+        "n_test": 6724,
+        "prevalence": 0.0573,
+        "model_ap": 0.974,
+        "rules_ap": 0.8344,
+        "precision": 0.9529,
+        "recall": 0.9455,
+        "f1": 0.9492,
+        "false_positives": 18,
+        "net_benefit_inr": 2111680.0,
+        "recall_L0_L6": 0.9938,
+        "recall_L7_L9": 0.8611666666666666,
+        "rules_recall_L7_L9": 0.46493333333333337
+      }
+    ],
+    "summary": {
+      "n_test": {
+        "mean": 6927.4286,
+        "std": 128.8395,
+        "min": 6724.0,
+        "max": 7077.0
+      },
+      "prevalence": {
+        "mean": 0.0499,
+        "std": 0.0055,
+        "min": 0.0433,
+        "max": 0.0573
+      },
+      "model_ap": {
+        "mean": 0.9683,
+        "std": 0.0158,
+        "min": 0.9353,
+        "max": 0.9819
+      },
+      "rules_ap": {
+        "mean": 0.8552,
+        "std": 0.0293,
+        "min": 0.814,
+        "max": 0.8904
+      },
+      "precision": {
+        "mean": 0.9398,
+        "std": 0.0285,
+        "min": 0.9003,
+        "max": 0.9755
+      },
+      "recall": {
+        "mean": 0.9449,
+        "std": 0.0231,
+        "min": 0.9079,
+        "max": 0.9728
+      },
+      "f1": {
+        "mean": 0.9418,
+        "std": 0.0115,
+        "min": 0.918,
+        "max": 0.9521
+      },
+      "false_positives": {
+        "mean": 21.2857,
+        "std": 10.5785,
+        "min": 8.0,
+        "max": 33.0
+      },
+      "net_benefit_inr": {
+        "mean": 1883908.5714,
+        "std": 231171.8342,
+        "min": 1583200.0,
+        "max": 2183520.0
+      },
+      "recall_L0_L6": {
+        "mean": 0.9923,
+        "std": 0.0099,
+        "min": 0.9731,
+        "max": 1.0
+      },
+      "recall_L7_L9": {
+        "mean": 0.8321,
+        "std": 0.0588,
+        "min": 0.7203,
+        "max": 0.8913
+      },
+      "rules_recall_L7_L9": {
+        "mean": 0.3582,
+        "std": 0.0993,
+        "min": 0.2114,
+        "max": 0.4649
+      }
+    }
+  },
+  "ablation": {
+    "seed": 20260904,
+    "results": [
+      {
+        "feature_set": "all",
+        "families": "behavioural,identity_churn,temporal,graph,neighbour,community",
+        "n_features": 41,
+        "average_precision": 0.9783,
+        "precision": 0.9154,
+        "recall": 0.9728,
+        "recall_L0_L6": 1.0,
+        "recall_L7_L9": 0.8913,
+        "net_benefit_inr": 2034240.0
+      },
+      {
+        "feature_set": "behavioural_only",
+        "families": "behavioural",
+        "n_features": 15,
+        "average_precision": 0.4872,
+        "precision": 0.764,
+        "recall": 0.3351,
+        "recall_L0_L6": 0.4363,
+        "recall_L7_L9": 0.0547,
+        "net_benefit_inr": 636960.0
+      },
+      {
+        "feature_set": "behavioural+churn",
+        "families": "behavioural,identity_churn",
+        "n_features": 22,
+        "average_precision": 0.81,
+        "precision": 0.7534,
+        "recall": 0.7575,
+        "recall_L0_L6": 0.735,
+        "recall_L7_L9": 0.8292,
+        "net_benefit_inr": 1427360.0
+      },
+      {
+        "feature_set": "behavioural+temporal",
+        "families": "behavioural,temporal",
+        "n_features": 19,
+        "average_precision": 0.6352,
+        "precision": 0.868,
+        "recall": 0.4659,
+        "recall_L0_L6": 0.589,
+        "recall_L7_L9": 0.1277,
+        "net_benefit_inr": 949920.0
+      },
+      {
+        "feature_set": "no_graph",
+        "families": "behavioural,identity_churn,temporal",
+        "n_features": 26,
+        "average_precision": 0.8972,
+        "precision": 0.7559,
+        "recall": 0.8774,
+        "recall_L0_L6": 0.8947,
+        "recall_L7_L9": 0.8305,
+        "net_benefit_inr": 1656640.0
+      },
+      {
+        "feature_set": "graph_only",
+        "families": "graph,neighbour,community",
+        "n_features": 15,
+        "average_precision": 0.9425,
+        "precision": 0.9762,
+        "recall": 0.8937,
+        "recall_L0_L6": 1.0,
+        "recall_L7_L9": 0.5813,
+        "net_benefit_inr": 1922560.0
+      },
+      {
+        "feature_set": "no_neighbour",
+        "families": "behavioural,identity_churn,temporal,graph,community",
+        "n_features": 38,
+        "average_precision": 0.9814,
+        "precision": 0.8732,
+        "recall": 0.9755,
+        "recall_L0_L6": 1.0,
+        "recall_L7_L9": 0.9011,
+        "net_benefit_inr": 1994560.0
+      }
+    ]
+  },
+  "prevalence_sensitivity": {
+    "threshold": 0.696,
+    "n_negatives": 6578,
+    "results": [
+      {
+        "target_prevalence": 0.01,
+        "positives_used": 66,
+        "achieved_prevalence": 0.0099,
+        "precision_mean": 0.6605,
+        "precision_p2_5": 0.6526,
+        "precision_p97_5": 0.6667,
+        "recall_mean": 0.9731,
+        "truncated": false
+      },
+      {
+        "target_prevalence": 0.02,
+        "positives_used": 134,
+        "achieved_prevalence": 0.02,
+        "precision_mean": 0.798,
+        "precision_p2_5": 0.7937,
+        "precision_p97_5": 0.8012,
+        "recall_mean": 0.9732,
+        "truncated": false
+      },
+      {
+        "target_prevalence": 0.03,
+        "positives_used": 203,
+        "achieved_prevalence": 0.0299,
+        "precision_mean": 0.8567,
+        "precision_p2_5": 0.8546,
+        "precision_p97_5": 0.859,
+        "recall_mean": 0.9718,
+        "truncated": false
+      },
+      {
+        "target_prevalence": 0.04,
+        "positives_used": 274,
+        "achieved_prevalence": 0.04,
+        "precision_mean": 0.8898,
+        "precision_p2_5": 0.8889,
+        "precision_p97_5": 0.8907,
+        "recall_mean": 0.9725,
+        "truncated": false
+      },
+      {
+        "target_prevalence": 0.0528,
+        "positives_used": 367,
+        "achieved_prevalence": 0.0528,
+        "precision_mean": 0.9154,
+        "precision_p2_5": 0.9154,
+        "precision_p97_5": 0.9154,
+        "recall_mean": 0.9728,
+        "truncated": false
+      }
+    ]
+  },
+  "fairness": {
+    "thresholds": {
+      "review": 0.2784,
+      "action": 0.8004
+    },
+    "definition": "restriction_rate = P(customer-visible action | account is legitimate). Monitoring and review-queue entries are not customer-visible.",
+    "by_cohort": [
+      {
+        "cohort": "solo",
+        "legitimate_accounts": 4406,
+        "restricted": 0,
+        "restriction_rate": 0.0,
+        "queued_for_review": 0,
+        "review_rate": 0.0,
+        "monitored": 2,
+        "any_flag_rate": 0.00045,
+        "disparate_impact_vs_solo": null,
+        "share_of_all_restrictions": 0.0,
+        "share_of_all_flags": 0.0
+      },
+      {
+        "cohort": "household",
+        "legitimate_accounts": 1444,
+        "restricted": 4,
+        "restriction_rate": 0.00277,
+        "queued_for_review": 88,
+        "review_rate": 0.06094,
+        "monitored": 13,
+        "any_flag_rate": 0.07271,
+        "disparate_impact_vs_solo": null,
+        "share_of_all_restrictions": 1.0,
+        "share_of_all_flags": 0.92
+      },
+      {
+        "cohort": "hub",
+        "legitimate_accounts": 728,
+        "restricted": 0,
+        "restriction_rate": 0.0,
+        "queued_for_review": 8,
+        "review_rate": 0.01099,
+        "monitored": 2,
+        "any_flag_rate": 0.01374,
+        "disparate_impact_vs_solo": null,
+        "share_of_all_restrictions": 0.0,
+        "share_of_all_flags": 0.08
+      }
+    ],
+    "reference_group": "solo",
+    "disparate_impact_undefined": true,
+    "finding": "No solo shopper is ever restricted, so the disparate-impact ratio is undefined rather than merely large. Every wrongly restricted customer lives in a multi-account household, and households are 22% of the legitimate population."
+  }
+}
