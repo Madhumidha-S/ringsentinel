@@ -1,0 +1,31 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+
+# Node
+node_modules/
+.next/
+next-env.d.ts
+*.tsbuildinfo
+
+# Generated artifacts. Reproduce with:
+#   ringsentinel generate && ringsentinel evaluate --from-disk
+artifacts/dataset/
+artifacts/ledger/
+artifacts/evaluation/model.pkl
+artifacts/evaluation/model.meta.json
+
+# Keep the committed evaluation report and summary so results are reviewable
+# without running anything.
+!artifacts/evaluation/report.json
+!artifacts/evaluation/summary.txt
+
+# Local
+.env
+.DS_Store
+
+.claude

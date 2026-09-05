@@ -1,0 +1,45 @@
+==============================================================================
+RINGSENTINEL - REPLAY BACKTEST
+==============================================================================
+Split           : train <= day 55, score at day 120
+Train / test    : 7,938 / 6,945 accounts (test prevalence 5.28%)
+
+                             MODEL       RULES
+average precision           0.9783      0.8904
+precision                   0.9154      0.9366
+recall                      0.9728      0.8447
+F1                          0.9432      0.8883
+false positives                 33          21
+net benefit (INR)        2,034,240   1,784,800
+
+Cost-optimal threshold : 0.696
+Abuse exposure caught  : INR 1,352,911 of INR 1,352,911 (100.0%)
+Legit value disrupted  : INR 3,754
+
+RECALL BY ADVERSARY EVASION LEVEL
+------------------------------------------------------------------------------
+  level  ring accts     model     rules      delta
+      0          32     1.000     1.000     +0.000
+      1          36     1.000     1.000     +0.000
+      2          47     1.000     1.000     +0.000
+      3          36     1.000     1.000     +0.000
+      4          47     1.000     1.000     +0.000
+      5          36     1.000     1.000     +0.000
+      6          40     1.000     0.900     +0.100
+      7          34     0.941     0.471     +0.471
+      8          27     0.889     0.593     +0.296
+      9          32     0.844     0.250     +0.594
+
+SHIPPED POLICY (three bands, human in the loop)
+------------------------------------------------------------------------------
+auto-actioned      : 305 accounts (precision 0.990)
+queued for review  : 172 accounts (cost INR 30,960)
+missed entirely    : 7 accounts
+recall incl. review: 0.970
+net benefit        : INR 2,049,853
+
+Cost assumptions (see docs/MODEL_CARD.md; all are assumptions, not measurements):
+  true positive recovery  INR 5,920
+  false positive cost     INR 2,400
+  manual review           INR 180
+==============================================================================
